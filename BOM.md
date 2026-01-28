@@ -26,6 +26,7 @@
 | 1 | Battery Cradle Mount | `battery_mount.scad` | ~1.5 hrs | No |
 | 1 | Switch Panel Mount | `switch_mount.scad` | ~30 min | No |
 | 1 | Barrel Jack Mount | `barrel_jack.scad` | ~30 min | No* |
+| 1 | PDB Mount (IA005) | `pdb_mount.scad` | ~45 min | No |
 
 *Optional - only needed for wall power*
 
@@ -55,10 +56,23 @@
 |-----|------|-------|----------------|------------|
 | 1 | 4xAA Battery Case | IA003 | 70×65×19mm, PH2.0 connector | $2-4 |
 | 1 | Power Switch Module | XA007 | On/Off, XH2.54 connector, 3A max | $2-3 |
+| 1 | Power Distribution Board | IA005 | 53×10×10mm, 1A max, M2 mount | $5.29 |
 | 1 | DC Barrel Jack* | XC008 | 5.5×2.1mm, panel mount, 12mm hole | $1-2 |
 | 1 | 6V DC Adapter* | - | 5.5×2.1mm plug, 500mA+ | $5-10 |
 
 *Optional - for wall power*
+
+**IA005 Power Distribution Board Includes:**
+- USB power cable
+- PH2.0-2P wire pair (for battery connection)
+- 5× SH1.0 jumper cables (for switches and device outputs)
+
+**IA005 Specifications:**
+- Size: 53 × 10 × 10mm, Weight: 3g
+- Max current: 1A per channel, Max voltage: 7.4V
+- Connectors: IN/OUT (PH2.0-2P), SW0-4 (SH1.0-2P), CH1-4 (SH1.0-2P)
+- SW0 acts as master switch controlling all outputs
+- White LED indicator (off = overcurrent protection triggered)
 
 ### Wiring & Connectors
 | Qty | Item | Specifications | Est. Price |
@@ -139,12 +153,13 @@
 | Bearings | $5-8 | $5-8 |
 | Battery Case | $2-4 | $2-4 |
 | Switch | $2-3 | $2-3 |
+| Power Distribution Board (IA005) | $5-6 | $5-6 |
 | Barrel Jack + Adapter | $6-12 | $6-12 |
 | Connectors/Wire | $5-10 | $5-10 |
 | Fasteners | $8-12 | $8-12 |
 | Decorative | - | $15-35 |
 | Safety Items | $10-20 | $10-20 |
-| **Total** | **$50-85** | **$65-120** |
+| **Total** | **$55-90** | **$70-125** |
 
 ---
 

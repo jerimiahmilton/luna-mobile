@@ -17,6 +17,7 @@ use <crib_clamp.scad>
 use <battery_mount.scad>
 use <switch_mount.scad>
 use <barrel_jack.scad>
+use <pdb_mount.scad>
 
 // ----------------------------------------------------------------------------
 // ASSEMBLY CONFIGURATION
@@ -33,6 +34,7 @@ show_hub = true;
 show_arms = true;
 show_mobile_elements = true;
 show_electronics = true;     // Battery, switch, barrel jack
+show_pdb = true;             // Power Distribution Board (IA005)
 
 // Animation
 animate = false;
@@ -157,7 +159,7 @@ module crib_assembly() {
 }
 
 // ----------------------------------------------------------------------------
-// ELECTRONICS ASSEMBLY (Battery + Switch + Barrel Jack)
+// ELECTRONICS ASSEMBLY (Battery + Switch + Barrel Jack + PDB)
 // ----------------------------------------------------------------------------
 
 module electronics_assembly() {
@@ -192,6 +194,19 @@ module electronics_assembly() {
         translate([barrel_jack_flange_diameter/2 + 5, 3, (barrel_jack_flange_diameter + 10)/2])
         rotate([-90, 0, 0])
         barrel_jack_model();
+    }
+    
+    // Power Distribution Board (IA005) - central power management
+    if (show_pdb) {
+        translate([0, -battery_case_width/2 - 30, 0])
+        rotate([0, 0, 90]) {
+            color(color_electronics, 0.8)
+            pdb_mount();
+            
+            // PDB dummy
+            translate([0, 0, 3 + 5])  // base height + board center
+            pdb_dummy();
+        }
     }
 }
 

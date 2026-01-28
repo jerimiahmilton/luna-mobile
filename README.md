@@ -29,6 +29,7 @@ A beautiful, motorized baby mobile designed for 3D printing. This project create
 | `battery_mount.scad` | 4xAA battery case holder |
 | `switch_mount.scad` | Power switch bracket |
 | `barrel_jack.scad` | DC barrel jack mount |
+| `pdb_mount.scad` | Power Distribution Board (IA005) mount |
 | `assembly.scad` | Complete assembly visualization |
 
 ### Pre-rendered STL Files
@@ -163,19 +164,63 @@ Press 608 bearings into:
 
 ### 7. Electronics Assembly
 
-**Battery + Switch Wiring:**
+**Wiring with Power Distribution Board (IA005):**
+
+The IA005 provides clean power management with overcurrent protection and multiple outputs.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    POWER DISTRIBUTION WIRING                            │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ┌─────────────┐      ┌─────────────────────────────────┐              │
+│  │ 4xAA Battery│─────→│ IN (PH2.0)                      │              │
+│  │   (IA003)   │      │                                 │              │
+│  │   (PH2.0)   │      │         IA005 PDB               │              │
+│  └─────────────┘      │   Power Distribution Board      │              │
+│                       │                                 │              │
+│  ┌─────────────┐      │ SW0 (SH1.0) ←── Master Switch   │              │
+│  │ XA007 Switch│─────→│ (controls all outputs)          │              │
+│  │  (XH2.54*)  │      │                                 │              │
+│  └─────────────┘      │ CH1 (SH1.0) ───→ Motor ─────────┼──→ 🔄        │
+│                       │ CH2 (SH1.0) ───→ (spare)        │              │
+│  * May need adapter   │ CH3 (SH1.0) ───→ (spare)        │              │
+│    or rewire to SH1.0 │ CH4 (SH1.0) ───→ (spare)        │              │
+│                       │                                 │              │
+│                       │ 💡 LED: White = OK              │              │
+│                       │        Off = Overcurrent        │              │
+│                       └─────────────────────────────────┘              │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Connection Summary:**
+| From | To | Cable Type |
+|------|----|------------|
+| Battery Case (IA003) | IA005 IN | PH2.0-2P (included) |
+| IA005 CH1 | Motor | SH1.0-2P (included) |
+| XA007 Switch | IA005 SW0 | SH1.0-2P* |
+
+*Note: XA007 switch uses XH2.54 connector. You may need to re-terminate with SH1.0 or use an adapter.
+
+**LED Indicator Behavior:**
+- ⚪ **White LED ON** = Normal operation, power flowing
+- ⚫ **LED OFF** = Overcurrent protection triggered (>1A), check connections
+
+**Benefits of IA005:**
+- ✅ Clean power distribution with labeled ports
+- ✅ Overcurrent protection (max 1A per channel)
+- ✅ Master switch input (SW0) controls all outputs
+- ✅ 4 spare outputs for future accessories (LEDs, sensors, etc.)
+- ✅ Easy daisy-chaining via OUT port
+
+**Alternative: Direct Wiring (without PDB)**
 ```
 ┌─────────────┐    ┌──────────┐    ┌─────────┐
 │ 4xAA Battery│───→│  Switch  │───→│  Motor  │
 │   (PH2.0)   │    │ (XH2.54) │    │         │
 └─────────────┘    └──────────┘    └─────────┘
 ```
-
-**Notes:**
-- Battery case has PH2.0 connector
-- Switch has XH2.54 connector
-- You may need a PH2.0 to XH2.54 adapter cable
-- OR solder/crimp your own connections
 
 **Alternative: Wall Power**
 ```
@@ -223,8 +268,13 @@ Adjust the color variables in `config.scad` for different preview colors.
 | Battery Case | JST PH2.0 | 2-pin |
 | Power Switch | XH2.54 | 2-pin |
 | DC Barrel Jack | 5.5×2.1mm | 2-wire |
+| PDB Power IN/OUT | JST PH2.0 | 2-pin |
+| PDB Switch Inputs | JST SH1.0 | 2-pin |
+| PDB Device Outputs | JST SH1.0 | 2-pin |
 
 **Adapter cables** may be needed to connect these. Search for "PH2.0 to XH2.54" adapters, or make your own with crimp terminals.
+
+**Note:** The IA005 PDB includes SH1.0 jumper cables, making it easy to connect to motors and switches directly.
 
 ## 📝 License
 
