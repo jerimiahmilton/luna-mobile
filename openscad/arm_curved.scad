@@ -124,42 +124,27 @@ module mounting_tab() {
 // ----------------------------------------------------------------------------
 
 module hook_integrated(flip = false) {
-    // Elegant C-shaped hook that opens outward for easy string attachment
-    // Integrated smoothly into the arm body with proper stem overlap
+    // Simple C-shaped hook that opens outward for easy string attachment
+    // Stem extends into arm body for solid union - NO floating spheres
     
     r_inner = hook_inner_diameter / 2;
     r_wire = hook_wire_thickness / 2;
     
     // Stem overlap into arm body for solid union
-    stem_overlap = curved_arm_height / 2 + 2;
+    stem_overlap = curved_arm_height + 2;
     
     mirror([0, flip ? 1 : 0, 0])
-    rotate([0, 0, 0]) {
+    union() {
         // Hook stem - extends UP into the arm body for proper union
         translate([0, 0, -hook_depth/3])
         cylinder(r = r_wire, h = hook_depth/3 + stem_overlap, $fn = 24);
         
-        // C-curve of hook
+        // C-curve of hook - simple, no ball tips
         translate([0, 0, -hook_depth])
         rotate([0, 90, -90 + hook_opening_angle/2])
         rotate_extrude(angle = 270 - hook_opening_angle, convexity = 4, $fn = 48)
         translate([r_inner + r_wire, 0, 0])
         circle(r = r_wire, $fn = 16);
-        
-        // Decorative ball at hook tip (prevents string from slipping)
-        hook_end_angle = 270 - hook_opening_angle;
-        tip_x = (r_inner + r_wire) * cos(-90 + hook_opening_angle/2 + hook_end_angle);
-        tip_y = (r_inner + r_wire) * sin(-90 + hook_opening_angle/2 + hook_end_angle);
-        
-        translate([tip_x, tip_y, -hook_depth])
-        sphere(r = r_wire * 1.3, $fn = 16);
-        
-        // Small ball at opening tip too
-        opening_x = (r_inner + r_wire) * cos(-90 + hook_opening_angle/2);
-        opening_y = (r_inner + r_wire) * sin(-90 + hook_opening_angle/2);
-        
-        translate([opening_x, opening_y, -hook_depth])
-        sphere(r = r_wire * 1.2, $fn = 16);
     }
 }
 
@@ -275,14 +260,6 @@ module arm_curved_set() {
 // RENDER
 // ----------------------------------------------------------------------------
 
-if ($preview) {
-    // Preview: show single arm in print orientation
-    arm_curved();
-    
-    // Show design orientation ghosted for reference
-    %translate([0, curved_arm_width * 3, 0])
-    arm_curved_design();
-} else {
-    // Export: all four arms for printing
-    arm_curved_set();
-}
+// Export: single arm in print orientation
+// Print this file multiple times for all 4 arms
+arm_curved();
