@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" xmlns:p="http://schemas.microsoft.com/3dmanufacturing/production/2015/06" unit="millimeter" xml:lang="en-US" requiredextensions="p" xmlns:BambuStudio="http://schemas.bambulab.com/package/2021">
+ <metadata name="Application">BambuStudio-02.00.01.50</metadata>
+ <metadata name="BambuStudio:3mfVersion">1</metadata>
+ <metadata name="Copyright" />
+ <metadata name="CreationDate">2025-04-09</metadata>
+ <metadata name="Description">&amp;lt;h3&amp;gt;Update 23/01/2026 &amp;lt;/h3&amp;gt;&amp;lt;p&amp;gt;Check out @&amp;lt;a target=&amp;#34;_blank&amp;#34; rel=&amp;#34;noopener noreferrer ugc&amp;#34; href=&amp;#34;https://makerworld.com/en/@jlkrsak&amp;#34;&amp;gt;jlkrsak&amp;lt;/a&amp;gt; &amp;lt;a target=&amp;#34;_blank&amp;#34; rel=&amp;#34;noopener noreferrer ugc&amp;#34; href=&amp;#34;https://makerworld.com/en/models/2284676-crib-mobile-arm-remix#profileId-2491824&amp;#34;&amp;gt;Crib Mobile Arm Remix&amp;lt;/a&amp;gt; to neatly install the mobile! &amp;lt;/p&amp;gt;&amp;lt;h2&amp;gt;&amp;lt;br&amp;gt;Gentle Rotating Baby Mobile (Ball Bearing Mechanism)&amp;lt;/h2&amp;gt;&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;A 3D-printed baby mobile designed for smooth motion, safety, and modern aesthetics.&amp;lt;/strong&amp;gt;&amp;lt;br&amp;gt;The rotating mobile features a built-in bearing for ultra-smooth and silent spinning, providing a calming motion for your baby.&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;This modular and printable design includes:&amp;lt;/p&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;Snap-fit arms that securely hold lightweight plush toys.&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;A central bearing housing for frictionless, consistent rotation.&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;Hex holes and Nut inserts for maximum stiffness.&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;blockquote&amp;gt;&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Note&amp;lt;/strong&amp;gt;: For decorative use only. Always install securely and keep out of direct reach of the baby.&amp;lt;/p&amp;gt;&amp;lt;/blockquote&amp;gt;&amp;lt;h3&amp;gt;How to Assemble:&amp;lt;/h3&amp;gt;&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Tools Required:&amp;lt;/strong&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;Hex keys&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;Small pliers to insert nuts&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;Precision knife for cleanup if needed&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Assembly Steps:&amp;lt;/strong&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;ol&amp;gt;&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Insert M6 Nut mid-print: &amp;lt;/strong&amp;gt;&amp;lt;br&amp;gt;Use the print profile provided so the print paused at the perfect time to insert the embedded M6 nut. &amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Insert Nuts:&amp;lt;/strong&amp;gt;&amp;lt;br&amp;gt;Place M3 nuts into the hexagonal sockets in each mobile part. Press them in using pliers or gently tap them with a tool handle.&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Install Bearings:&amp;lt;/strong&amp;gt;&amp;lt;br&amp;gt;Fit the 6802-2RS ball bearings into their housing on the central hub piece. Make sure the bearing is flush and rotates smoothly.&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Attach Arms:&amp;lt;/strong&amp;gt;&amp;lt;br&amp;gt;Align each arm with the central hub and secure using two M3 screws for each arm.&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Cap Installation:&amp;lt;/strong&amp;gt;&amp;lt;br&amp;gt;Secure the top and bottom cover piece using the M6 screw through the center to lock the assembly.&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Hang Toys:&amp;lt;/strong&amp;gt;&amp;lt;br&amp;gt;Use strings to attach plush animals or stars to the hooks on each arm. Keep the weight balanced for even spinning.&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Mount to Crib or Stand:&amp;lt;/strong&amp;gt;&amp;lt;br&amp;gt;Attach the mobile securely above the crib using your preferred mounting method (not included).&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;Always happy to hear your suggestions!&amp;lt;br&amp;gt;&amp;lt;br&amp;gt; &amp;lt;/li&amp;gt;&amp;lt;/ol&amp;gt;</metadata>
+ <metadata name="Designer">lecourrieldeh</metadata>
+ <metadata name="DesignerCover">2025-04-08_4c2105ef0b0a38.jpeg</metadata>
+ <metadata name="DesignerUserId">1948190721</metadata>
+ <metadata name="License">Standard Digital File License</metadata>
+ <metadata name="ModificationDate">2025-04-09</metadata>
+ <metadata name="Origin">original</metadata>
+ <metadata name="Title">Gentle Rotating Baby Mobile</metadata>
+ <resources>
+  <object id="2" p:UUID="00000001-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/object_1.model" objectid="1" p:UUID="00010000-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0" />
+   </components>
+  </object>
+  <object id="4" p:UUID="00000009-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/object_9.model" objectid="3" p:UUID="00090000-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0" />
+   </components>
+  </object>
+  <object id="6" p:UUID="00000002-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/object_2.model" objectid="5" p:UUID="00020000-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0" />
+   </components>
+  </object>
+  <object id="8" p:UUID="00000004-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/object_4.model" objectid="7" p:UUID="00040000-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0" />
+   </components>
+  </object>
+  <object id="10" p:UUID="00000023-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/object_35.model" objectid="9" p:UUID="00230000-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 -9.53674316e-07 0" />
+   </components>
+  </object>
+ </resources>
+ <build p:UUID="2c7c17d8-22b5-4d84-8835-1976022ea369">
+  <item objectid="2" p:UUID="00000002-b1ec-4553-aec9-835e5b724bb4" transform="1.81888292e-16 1.27359553e-16 1 -0.573576436 0.819152044 -3.69778549e-32 -0.819152044 -0.573576436 2.22044605e-16 126.86285 127.5419 6" printable="1" />
+  <item objectid="4" p:UUID="00000004-b1ec-4553-aec9-835e5b724bb4" transform="0.713388425 -0.700768831 2.77555756e-16 -5.62260179e-17 -4.53311746e-16 -1 0.700768831 0.713388425 -4.37008994e-16 435.19961 -179.20037 28.7905884" printable="1" />
+  <item objectid="6" p:UUID="00000006-b1ec-4553-aec9-835e5b724bb4" transform="1 0 0 0 2.22044605e-16 1 0 -1 2.22044605e-16 435.2 127.99999 27.5" printable="1" />
+  <item objectid="8" p:UUID="00000008-b1ec-4553-aec9-835e5b724bb4" transform="2.22044605e-16 0 1 0 1 0 -1 0 2.22044605e-16 128.2 -179.19999 6.875" printable="1" />
+  <item objectid="10" p:UUID="0000000a-b1ec-4553-aec9-835e5b724bb4" transform="1 0 0 0 2.22044605e-16 1 0 -1 2.22044605e-16 742.4 128 30.2497377" printable="1" />
+ </build>
+<metadata name="CopyRight">[]</metadata><metadata name="ProfileTitle">0.2mm&amp;0.12mm layer, 5 walls, 15% infill, with Pause</metadata><metadata name="ProfileCover">2025-04-08_4c2105ef0b0a38.jpeg</metadata><metadata name="ProfileDescription">&amp;lt;p&amp;gt;The pause is already set for the central piece. &amp;lt;/p&amp;gt;</metadata><metadata name="ProfileUserId">1948190721</metadata><metadata name="ProfileUserName">lecourrieldeh</metadata><metadata name="DesignRegion">US</metadata><metadata name="DesignModelId">USc5d8cda46158e4</metadata><metadata name="DesignProfileId">284073203</metadata></model>

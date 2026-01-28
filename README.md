@@ -23,7 +23,8 @@ A beautiful, motorized baby mobile designed for 3D printing. This project create
 | `motor_mount.scad` | N20 motor housing (single shaft version) |
 | `gear_assembly.scad` | Single-stage gear reduction (8:1) |
 | `central_hub.scad` | Main hub with bearing seat |
-| `arm.scad` | Arms with decorative hooks |
+| `arm_curved.scad` | **Curved arms with integrated hooks** (default) |
+| `arm_straight.scad` | Original straight arms with end hooks |
 | `ceiling_mount.scad` | Ceiling mounting bracket |
 | `crib_clamp.scad` | Adjustable crib rail clamp |
 | `battery_mount.scad` | 4xAA battery case holder |
@@ -251,12 +252,31 @@ Edit `config.scad` to adjust:
 - `gear_module` - Gear size (affects overall gearbox size)
 - `motor_rpm` - If using a different speed motor
 
-### Alternative Hook Styles
-In `arm.scad`, choose from:
-- Default curved hook
-- Loop hook
-- Star hook
-- Moon hook (🌙 for Luna!)
+### Arm Styles
+
+Luna Mobile includes two arm designs:
+
+**🌊 Curved Arms (Default)** — `arm_curved.scad`
+- Elegant sweeping arc shape inspired by Scandinavian design
+- **Two integrated downward-facing hooks** per arm for hanging decorations
+- Decorative recessed channel along the top surface
+- Mounting holes for secure hub attachment
+- Perfect for the main decorative elements
+
+**➖ Straight Arms** — `arm_straight.scad`
+- Simple, clean design with hook at the end
+- Multiple hook styles available:
+  - Default curved hook
+  - Loop hook
+  - Star hook
+  - Moon hook (🌙 for Luna!)
+- Good for minimalist aesthetic or more elements
+
+To switch arm styles, edit `config.scad`:
+```openscad
+use_curved_arms = true;   // Curved arms with integrated hooks (default)
+use_curved_arms = false;  // Original straight arms
+```
 
 ### Colors
 Adjust the color variables in `config.scad` for different preview colors.

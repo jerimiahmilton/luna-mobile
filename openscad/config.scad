@@ -111,7 +111,7 @@ hub_arm_socket_diameter = 10;       // Diameter of arm attachment socket
 hub_arm_socket_depth = 12;          // Depth of arm socket
 
 // ----------------------------------------------------------------------------
-// ARM SPECIFICATIONS
+// ARM SPECIFICATIONS (Straight Arms - arm_straight.scad)
 // ----------------------------------------------------------------------------
 arm_length = 180;                   // Arm length (parametric: 150-200mm recommended)
 arm_width = 12;                     // Arm cross-section width
@@ -120,6 +120,42 @@ arm_plug_diameter = 10 - tolerance; // Plug diameter (matches socket)
 arm_plug_length = 10;               // Length of plug that goes into hub
 arm_hook_diameter = 8;              // Hook inner diameter for hanging elements
 arm_hook_thickness = 4;             // Hook wire thickness
+
+// ----------------------------------------------------------------------------
+// CURVED ARM SPECIFICATIONS (arm_curved.scad) - DEFAULT
+// ----------------------------------------------------------------------------
+// Elegant curved arms with integrated hooks for hanging decorations
+// Scandinavian-inspired minimalist design
+
+// Main dimensions (inspired by reference: ~56mm x 86mm)
+arm_curved_length = 85;             // Length of curved arm
+arm_curved_width = 14;              // Width of arm cross-section
+arm_curved_height = 8;              // Height/thickness of arm
+
+// Curve shape
+arm_curve_arc_height = 12;          // Height of arc peak (creates gentle sweep)
+arm_curve_segments = 64;            // Smoothness of curve (higher = smoother)
+
+// Integrated hooks (2 per arm by default)
+arm_hook_count = 2;                 // Number of downward-facing hooks
+arm_hook_inner_dia = 6;             // Hook opening diameter (for string/ribbon)
+arm_hook_wire = 3;                  // Thickness of hook "wire"
+arm_hook_depth = 12;                // How far hooks extend downward
+arm_hook_opening = 45;              // Opening angle (for easy string attachment)
+
+// Mounting tab (for attachment to hub)
+arm_mount_hole_dia = 3.2;           // M3 clearance hole
+arm_mount_spacing = 10;             // Distance between mounting holes
+arm_mount_length = 18;              // Length of mounting tab
+arm_mount_width = 20;               // Width of mounting tab
+
+// Aesthetic channels (decorative grooves)
+arm_channel_width = 4;              // Width of recessed channels
+arm_channel_depth = 1.5;            // Depth of channels
+arm_channel_count = 2;              // Number of parallel channels
+
+// Arm style selection (for assembly.scad)
+use_curved_arms = true;             // true = curved arms, false = straight arms
 
 // ----------------------------------------------------------------------------
 // CEILING MOUNT SPECIFICATIONS

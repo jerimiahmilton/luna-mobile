@@ -11,7 +11,8 @@ include <config.scad>
 use <motor_mount.scad>
 use <gear_assembly.scad>
 use <central_hub.scad>
-use <arm.scad>
+use <arm_straight.scad>
+use <arm_curved.scad>
 use <ceiling_mount.scad>
 use <crib_clamp.scad>
 use <battery_mount.scad>
@@ -82,23 +83,37 @@ module ceiling_assembly() {
             central_hub();
         }
         
-        // Arms
+        // Arms - uses curved arms by default (controlled by use_curved_arms in config.scad)
         if (show_arms) {
             for (i = [0:hub_arm_count-1]) {
                 rotate([0, 0, i * (360/hub_arm_count)])
-                translate([hub_outer_diameter/2 - 5, 0, hub_height/2])
-                rotate([0, 90, 0])
-                rotate([0, 0, 90])
-                arm();
+                if (use_curved_arms) {
+                    // Curved arms with integrated hooks
+                    translate([hub_outer_diameter/2 + 5, 0, -arm_curved_height/2])
+                    arm_curved();
+                } else {
+                    // Original straight arms
+                    translate([hub_outer_diameter/2 - 5, 0, hub_height/2])
+                    rotate([0, 90, 0])
+                    rotate([0, 0, 90])
+                    arm();
+                }
             }
         }
         
         // Mobile elements (decorative spheres for visualization)
+        // For curved arms, elements hang from the integrated hooks
         if (show_mobile_elements) {
             for (i = [0:hub_arm_count-1]) {
                 rotate([0, 0, i * (360/hub_arm_count)])
-                translate([hub_outer_diameter/2 + arm_length, 0, hub_height/2])
-                mobile_element(i);
+                if (use_curved_arms) {
+                    // Position elements under the hooks on curved arms
+                    translate([hub_outer_diameter/2 + arm_curved_length * 0.55, 0, -arm_curved_height/2 - arm_hook_depth])
+                    mobile_element(i);
+                } else {
+                    translate([hub_outer_diameter/2 + arm_length, 0, hub_height/2])
+                    mobile_element(i);
+                }
             }
         }
     }
@@ -136,14 +151,21 @@ module crib_assembly() {
             central_hub();
         }
         
-        // Arms
+        // Arms - uses curved arms by default
         if (show_arms) {
             for (i = [0:hub_arm_count-1]) {
                 rotate([0, 0, i * (360/hub_arm_count)])
-                translate([hub_outer_diameter/2 - 5, 0, -hub_height/2])
-                rotate([0, -90, 0])
-                rotate([0, 0, -90])
-                arm();
+                if (use_curved_arms) {
+                    // Curved arms - positioned to hang down
+                    translate([hub_outer_diameter/2 + 5, 0, -arm_curved_height/2])
+                    rotate([180, 0, 0])  // Flip for crib mount
+                    arm_curved();
+                } else {
+                    translate([hub_outer_diameter/2 - 5, 0, -hub_height/2])
+                    rotate([0, -90, 0])
+                    rotate([0, 0, -90])
+                    arm();
+                }
             }
         }
         
@@ -151,8 +173,13 @@ module crib_assembly() {
         if (show_mobile_elements) {
             for (i = [0:hub_arm_count-1]) {
                 rotate([0, 0, i * (360/hub_arm_count)])
-                translate([hub_outer_diameter/2 + arm_length - 10, 0, -hub_height/2 - 30])
-                mobile_element(i);
+                if (use_curved_arms) {
+                    translate([hub_outer_diameter/2 + arm_curved_length * 0.55, 0, arm_curved_height/2 + arm_hook_depth])
+                    mobile_element(i);
+                } else {
+                    translate([hub_outer_diameter/2 + arm_length - 10, 0, -hub_height/2 - 30])
+                    mobile_element(i);
+                }
             }
         }
     }
@@ -361,10 +388,15 @@ module exploded_assembly(explode = 50) {
     // Arms
     for (i = [0:hub_arm_count-1]) {
         rotate([0, 0, i * (360/hub_arm_count)])
-        translate([hub_outer_diameter/2 + explode/2, 0, hub_height/2])
-        rotate([0, 90, 0])
-        rotate([0, 0, 90])
-        arm();
+        if (use_curved_arms) {
+            translate([hub_outer_diameter/2 + explode/2, 0, 0])
+            arm_curved();
+        } else {
+            translate([hub_outer_diameter/2 + explode/2, 0, hub_height/2])
+            rotate([0, 90, 0])
+            rotate([0, 0, 90])
+            arm();
+        }
     }
     
     // Electronics
@@ -381,11 +413,18 @@ module print_plate_mechanical() {
     // Hub
     central_hub();
     
-    // Arms (x4)
-    translate([80, 0, 0]) arm();
-    translate([80, 20, 0]) arm();
-    translate([80, 40, 0]) arm();
-    translate([80, 60, 0]) arm();
+    // Arms (x4) - uses curved arms by default
+    if (use_curved_arms) {
+        translate([80, 0, 0]) arm_curved();
+        translate([80, 25, 0]) arm_curved();
+        translate([80, 50, 0]) arm_curved();
+        translate([80, 75, 0]) arm_curved();
+    } else {
+        translate([80, 0, 0]) arm();
+        translate([80, 20, 0]) arm();
+        translate([80, 40, 0]) arm();
+        translate([80, 60, 0]) arm();
+    }
     
     // Ceiling mount
     translate([0, 100, ceiling_mount_height])
