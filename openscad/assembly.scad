@@ -14,6 +14,9 @@ use <central_hub.scad>
 use <arm.scad>
 use <ceiling_mount.scad>
 use <crib_clamp.scad>
+use <battery_mount.scad>
+use <switch_mount.scad>
+use <barrel_jack.scad>
 
 // ----------------------------------------------------------------------------
 // ASSEMBLY CONFIGURATION
@@ -29,11 +32,15 @@ show_gears = true;
 show_hub = true;
 show_arms = true;
 show_mobile_elements = true;
+show_electronics = true;     // Battery, switch, barrel jack
 
 // Animation
 animate = false;
-rotation_speed = 3;  // RPM for animation
+rotation_speed = target_rpm;  // Uses calculated RPM from config
 current_angle = animate ? $t * 360 * rotation_speed : 0;
+
+// Electronics placement
+electronics_offset = [80, 0, 0];  // Position relative to main assembly
 
 // ----------------------------------------------------------------------------
 // COMPLETE CEILING MOUNT ASSEMBLY
@@ -52,11 +59,17 @@ module ceiling_assembly() {
         motor_mount();
     }
     
-    // Gear assembly
+    // Gear assembly (simplified single-stage)
     if (show_gears) {
         translate([0, 0, -ceiling_mount_height + ceiling_plate_thickness - 10])
         rotate([180, 0, 0])
         gear_assembly();
+    }
+    
+    // Electronics (battery, switch, barrel jack)
+    if (show_electronics) {
+        translate(electronics_offset)
+        electronics_assembly();
     }
     
     // Rotating assembly (hub + arms)
@@ -106,6 +119,12 @@ module crib_assembly() {
         motor_mount();
     }
     
+    // Electronics (integrated with clamp body)
+    if (show_electronics) {
+        translate([crib_rail_thickness/2 + 80, 0, clamp_jaw_depth + 20])
+        electronics_assembly();
+    }
+    
     // Rotating assembly
     translate([crib_rail_thickness/2 + 10, 0, clamp_jaw_depth + 30 + 30])
     rotate([0, 0, current_angle]) {
@@ -138,6 +157,67 @@ module crib_assembly() {
 }
 
 // ----------------------------------------------------------------------------
+// ELECTRONICS ASSEMBLY (Battery + Switch + Barrel Jack)
+// ----------------------------------------------------------------------------
+
+module electronics_assembly() {
+    // Battery mount
+    color(color_electronics, 0.8)
+    battery_cradle_mount();
+    
+    // Battery case (dummy)
+    translate([0, 0, battery_mount_wall + battery_case_height/2 + battery_mount_clearance])
+    battery_case_dummy();
+    
+    // Power switch mount (positioned at edge of battery mount)
+    translate([battery_case_length/2 + 25, 0, 0])
+    rotate([0, 0, 90]) {
+        color(color_electronics, 0.8)
+        switch_panel_mount();
+        
+        // Switch dummy
+        translate([switch_mount_wall + switch_mount_clearance + switch_length/2, 
+                   switch_mount_wall + switch_mount_clearance + switch_width/2, 
+                   switch_mount_wall + switch_height/2])
+        switch_dummy();
+    }
+    
+    // Optional: Barrel jack (for wall power)
+    translate([-battery_case_length/2 - 20, 0, 10])
+    rotate([0, 0, -90]) {
+        color(color_electronics, 0.8)
+        barrel_jack_panel_mount();
+        
+        // Barrel jack model
+        translate([barrel_jack_flange_diameter/2 + 5, 3, (barrel_jack_flange_diameter + 10)/2])
+        rotate([-90, 0, 0])
+        barrel_jack_model();
+    }
+}
+
+// Forward declaration for battery/switch dummies
+module battery_case_dummy() {
+    color(color_battery) {
+        cube([battery_case_length, battery_case_width, battery_case_height], center = true);
+        translate([0, battery_case_width/2 + 5, 0])
+        rotate([90, 0, 0])
+        cylinder(d = 4, h = 10);
+    }
+}
+
+module switch_dummy() {
+    color(color_switch) {
+        cube([switch_length, switch_width, 2], center = true);
+        translate([0, 0, 2])
+        cube([15, 10, 8], center = true);
+        translate([0, 0, 6 + switch_actuator_height/2])
+        cube([8, 6, switch_actuator_height], center = true);
+        translate([switch_length/2 - 3, 0, -2])
+        cube([6, 8, 4], center = true);
+    }
+}
+
+// ----------------------------------------------------------------------------
 // DECORATIVE MOBILE ELEMENTS
 // ----------------------------------------------------------------------------
 
@@ -166,7 +246,7 @@ module mobile_element(index) {
             scale([15, 15, 3])
             star_3d();
         } else if (index == 1) {
-            // Moon
+            // Moon (🌙 for Luna!)
             scale([1.5, 1.5, 1])
             moon_3d();
         } else if (index == 2) {
@@ -199,7 +279,7 @@ module star_2d(points, outer_r, inner_r) {
     ]);
 }
 
-// 3D Moon (crescent)
+// 3D Moon (crescent) - For Luna! 🌙
 module moon_3d() {
     difference() {
         sphere(d = 25);
@@ -239,11 +319,11 @@ module heart_2d() {
 
 module exploded_assembly(explode = 50) {
     // Ceiling mount
-    translate([0, 0, explode * 3])
+    translate([0, 0, explode * 4])
     ceiling_mount();
     
     // Bearing
-    translate([0, 0, explode * 2])
+    translate([0, 0, explode * 3])
     color(color_bearing)
     difference() {
         cylinder(d = bearing_outer_diameter, h = bearing_width);
@@ -252,8 +332,12 @@ module exploded_assembly(explode = 50) {
     }
     
     // Gear assembly
-    translate([0, 0, explode])
+    translate([0, 0, explode * 2])
     gear_assembly();
+    
+    // Motor mount
+    translate([40, 30, explode * 1.5])
+    motor_mount();
     
     // Hub
     translate([0, 0, 0])
@@ -267,14 +351,18 @@ module exploded_assembly(explode = 50) {
         rotate([0, 0, 90])
         arm();
     }
+    
+    // Electronics
+    translate([explode * 2, 0, -explode])
+    electronics_assembly();
 }
 
 // ----------------------------------------------------------------------------
 // PRINT PLATE LAYOUTS
 // ----------------------------------------------------------------------------
 
-// All printable parts laid out for efficient printing
-module print_plate_all() {
+// All mechanical parts laid out for printing
+module print_plate_mechanical() {
     // Hub
     central_hub();
     
@@ -292,6 +380,38 @@ module print_plate_all() {
     // Motor mount
     translate([100, 100, 0])
     motor_mount();
+    
+    // Gears
+    translate([180, 0, 0]) motor_pinion();
+    translate([180, 50, 0]) output_gear();
+}
+
+// Electronics mounts laid out for printing
+module print_plate_electronics() {
+    // Battery mount
+    battery_cradle_mount();
+    
+    // Switch mount
+    translate([100, 0, 0])
+    switch_panel_mount();
+    
+    // Barrel jack mount
+    translate([150, 0, 0])
+    barrel_jack_panel_mount();
+}
+
+// ----------------------------------------------------------------------------
+// WIRING DIAGRAM (2D visualization)
+// ----------------------------------------------------------------------------
+
+module wiring_diagram() {
+    // This is a simple 2D representation for reference
+    // See README.md for detailed wiring instructions
+    
+    translate([0, 0, 0.1])
+    color([0.2, 0.5, 0.8])
+    linear_extrude(height = 0.1)
+    text("See README.md for wiring diagram", size = 5);
 }
 
 // ----------------------------------------------------------------------------
@@ -306,4 +426,5 @@ if (mount_type == "ceiling") {
 
 // Uncomment for other views:
 // exploded_assembly(80);
-// print_plate_all();
+// print_plate_mechanical();
+// print_plate_electronics();
