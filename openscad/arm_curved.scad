@@ -4,6 +4,9 @@
 // Elegant curved arms inspired by Scandinavian design
 // Features a sweeping arc shape with integrated downward hooks
 // for hanging decorations
+// 
+// PRINT ORIENTATION: Model is oriented on its side for printing
+// (curve profile pointing up, like a rainbow on its side)
 // ============================================================================
 
 include <config.scad>
@@ -30,8 +33,6 @@ hook_depth = is_undef(arm_hook_depth) ? 12 : arm_hook_depth;
 hook_opening_angle = is_undef(arm_hook_opening) ? 45 : arm_hook_opening;
 
 // Mounting parameters  
-mount_hole_diameter = is_undef(arm_mount_hole_dia) ? 3.2 : arm_mount_hole_dia; // M3 clearance
-mount_hole_spacing = is_undef(arm_mount_spacing) ? 10 : arm_mount_spacing;
 mount_tab_length = is_undef(arm_mount_length) ? 18 : arm_mount_length;
 mount_tab_width = is_undef(arm_mount_width) ? 20 : arm_mount_width;
 
@@ -99,50 +100,22 @@ module arm_cross_section(w, h) {
     }
 }
 
-// Alternative: More rectangular with rounded edges
-module arm_cross_section_rect(w, h) {
-    r = min(w, h) * 0.25;  // Corner radius
-    
-    hull() {
-        for (y = [-w/2 + r, w/2 - r])
-            for (z = [-h/2 + r, h/2 + r])
-                translate([0, y, z])
-                sphere(r = r, $fn = 12);
-    }
-}
-
 // ----------------------------------------------------------------------------
-// MOUNTING TAB
+// MOUNTING TAB (solid, no holes - connection method TBD)
 // ----------------------------------------------------------------------------
 
 module mounting_tab() {
-    difference() {
-        // Tab body - extends from arm base
-        hull() {
-            // Connection to arm
-            translate([0, 0, 0])
-            arm_cross_section(curved_arm_width, curved_arm_height);
-            
-            // Tab end (flat for mounting)
-            translate([-mount_tab_length + 5, 0, -curved_arm_height/2])
-            linear_extrude(height = curved_arm_height)
-            offset(r = 3)
-            square([mount_tab_length - 10, mount_tab_width - 6], center = true);
-        }
+    // Solid tab body - extends from arm base
+    hull() {
+        // Connection to arm
+        translate([0, 0, 0])
+        arm_cross_section(curved_arm_width, curved_arm_height);
         
-        // Mounting holes
-        translate([-mount_tab_length/2, mount_hole_spacing/2, 0])
-        cylinder(d = mount_hole_diameter, h = curved_arm_height + 10, center = true, $fn = 24);
-        
-        translate([-mount_tab_length/2, -mount_hole_spacing/2, 0])
-        cylinder(d = mount_hole_diameter, h = curved_arm_height + 10, center = true, $fn = 24);
-        
-        // Countersink (optional, for flush screw heads)
-        translate([-mount_tab_length/2, mount_hole_spacing/2, curved_arm_height/2 - 1.5])
-        cylinder(d1 = mount_hole_diameter, d2 = mount_hole_diameter * 2, h = 2, $fn = 24);
-        
-        translate([-mount_tab_length/2, -mount_hole_spacing/2, curved_arm_height/2 - 1.5])
-        cylinder(d1 = mount_hole_diameter, d2 = mount_hole_diameter * 2, h = 2, $fn = 24);
+        // Tab end (flat for mounting)
+        translate([-mount_tab_length + 5, 0, -curved_arm_height/2])
+        linear_extrude(height = curved_arm_height)
+        offset(r = 3)
+        square([mount_tab_length - 10, mount_tab_width - 6], center = true);
     }
 }
 
@@ -152,16 +125,19 @@ module mounting_tab() {
 
 module hook_integrated(flip = false) {
     // Elegant C-shaped hook that opens outward for easy string attachment
-    // Integrated smoothly into the arm body
+    // Integrated smoothly into the arm body with proper stem overlap
     
     r_inner = hook_inner_diameter / 2;
     r_wire = hook_wire_thickness / 2;
     
+    // Stem overlap into arm body for solid union
+    stem_overlap = curved_arm_height / 2 + 2;
+    
     mirror([0, flip ? 1 : 0, 0])
     rotate([0, 0, 0]) {
-        // Hook stem (connects to arm)
+        // Hook stem - extends UP into the arm body for proper union
         translate([0, 0, -hook_depth/3])
-        cylinder(r = r_wire, h = hook_depth/3 + 0.1, $fn = 24);
+        cylinder(r = r_wire, h = hook_depth/3 + stem_overlap, $fn = 24);
         
         // C-curve of hook
         translate([0, 0, -hook_depth])
@@ -187,65 +163,11 @@ module hook_integrated(flip = false) {
     }
 }
 
-// Simpler teardrop hook for easier printing
-module hook_teardrop() {
-    r_wire = hook_wire_thickness / 2;
-    
-    // Vertical stem
-    cylinder(r = r_wire, h = hook_depth/2, $fn = 24);
-    
-    // Teardrop loop
-    translate([0, 0, -hook_depth])
-    rotate([90, 0, 0])
-    linear_extrude(height = r_wire * 2, center = true)
-    teardrop_2d(hook_inner_diameter/2 + r_wire);
-}
-
-module teardrop_2d(r) {
-    union() {
-        circle(r = r, $fn = 32);
-        rotate([0, 0, 45])
-        square([r, r]);
-    }
-}
-
 // ----------------------------------------------------------------------------
 // AESTHETIC CHANNELS
 // ----------------------------------------------------------------------------
 
-module top_channels() {
-    // Decorative recessed channels along the top surface
-    // Following the curve of the arm
-    
-    for (c = [0:channel_count-1]) {
-        channel_offset = (c - (channel_count-1)/2) * (channel_width + 2);
-        
-        // Create channel following arm curve
-        hull_chain_channel(channel_offset);
-    }
-}
-
-module hull_chain_channel(y_offset) {
-    steps = curve_segments / 2;  // Fewer steps for channels
-    
-    for (i = [1:steps-2]) {  // Skip first and last segments
-        t1 = i / steps;
-        t2 = (i + 1) / steps;
-        
-        p1 = arm_curve_point(t1);
-        p2 = arm_curve_point(t2);
-        
-        hull() {
-            translate(p1 + [0, y_offset, arm_height_at(t1)/2 - channel_depth/2])
-            sphere(d = channel_width, $fn = 12);
-            
-            translate(p2 + [0, y_offset, arm_height_at(t2)/2 - channel_depth/2])
-            sphere(d = channel_width, $fn = 12);
-        }
-    }
-}
-
-// Simpler channel - single groove down center
+// Simple channel - single groove down center
 module center_channel() {
     steps = curve_segments / 2;
     
@@ -269,10 +191,11 @@ module center_channel() {
 }
 
 // ----------------------------------------------------------------------------
-// COMPLETE CURVED ARM
+// COMPLETE CURVED ARM (design orientation)
 // ----------------------------------------------------------------------------
 
-module arm_curved() {
+module arm_curved_design() {
+    // Arm in design orientation (curve arching upward in Z)
     color(color_arms)
     difference() {
         union() {
@@ -282,14 +205,14 @@ module arm_curved() {
             // Mounting tab at base
             mounting_tab();
             
-            // Integrated hooks
-            // Position hooks along the arm
+            // Integrated hooks - properly merged with arm body
             for (h = [0:hook_count-1]) {
                 // Distribute hooks evenly, avoiding the very ends
                 t = 0.35 + h * 0.4 / max(1, hook_count - 1);
                 
                 p = arm_curve_point(t);
                 
+                // Position hook so stem extends into arm body
                 translate(p + [0, 0, -arm_height_at(t)/2])
                 hook_integrated(h % 2 == 1);  // Alternate hook direction
             }
@@ -301,17 +224,23 @@ module arm_curved() {
 }
 
 // ----------------------------------------------------------------------------
+// COMPLETE CURVED ARM (print orientation)
+// ----------------------------------------------------------------------------
+
+module arm_curved() {
+    // Rotate to print orientation: laying on side, curve pointing up
+    // This avoids supports and gives better layer adhesion along arm length
+    rotate([90, 0, 0])
+    arm_curved_design();
+}
+
+// ----------------------------------------------------------------------------
 // ALTERNATIVE STYLES
 // ----------------------------------------------------------------------------
 
-// More dramatic S-curve
-module arm_curved_s() {
-    // S-curve variation - TODO: implement
-    arm_curved();
-}
-
 // Minimal - no channels
 module arm_curved_minimal() {
+    rotate([90, 0, 0])
     color(color_arms)
     union() {
         curved_arm_body();
@@ -333,10 +262,11 @@ module arm_curved_minimal() {
 
 module arm_curved_set() {
     // Four arms arranged for printing
-    spacing = curved_arm_width + 10;
+    // After rotation, arms are laid flat with hooks pointing sideways
+    spacing = hook_depth + curved_arm_width + 5;
     
     for (i = [0:3]) {
-        translate([0, i * spacing, 0])
+        translate([0, 0, i * spacing])
         arm_curved();
     }
 }
@@ -346,13 +276,12 @@ module arm_curved_set() {
 // ----------------------------------------------------------------------------
 
 if ($preview) {
-    // Preview: show single arm with mounting orientation
+    // Preview: show single arm in print orientation
     arm_curved();
     
-    // Show a second one rotated to visualize how they'd look on hub
-    %translate([0, curved_arm_width * 2, 0])
-    mirror([1, 0, 0])
-    arm_curved();
+    // Show design orientation ghosted for reference
+    %translate([0, curved_arm_width * 3, 0])
+    arm_curved_design();
 } else {
     // Export: all four arms for printing
     arm_curved_set();
