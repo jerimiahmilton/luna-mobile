@@ -2,8 +2,6 @@
 
 A beautiful, motorized baby mobile designed for 3D printing. This project creates a gently rotating mobile that can be mounted to a ceiling or crib rail.
 
-![Luna's Baby Mobile](docs/preview.png)
-
 ## ✨ Features
 
 - **Motorized rotation** - Gentle 3 RPM rotation using an N20 worm gear motor
